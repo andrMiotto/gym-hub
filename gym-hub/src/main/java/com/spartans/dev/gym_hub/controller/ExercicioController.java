@@ -1,0 +1,49 @@
+package com.spartans.dev.gym_hub.controller;
+
+import com.spartans.dev.gym_hub.dto.exercicio.ExercicioRequisicaoDTO;
+import com.spartans.dev.gym_hub.dto.exercicio.ExercicioRespostaDTO;
+import com.spartans.dev.gym_hub.service.ExercicioService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/exercicios")
+public class ExercicioController {
+
+
+    private final ExercicioService exercicioService;
+
+    @PostMapping("/cadastrar")
+    public ExercicioRespostaDTO create(@RequestBody ExercicioRequisicaoDTO exercicioRequisicaoDTO) {
+        return exercicioService.create(exercicioRequisicaoDTO);
+
+    }
+
+    @GetMapping("/listarTodos")
+    public List<ExercicioRespostaDTO> listAll() {
+        return exercicioService.listAll();
+
+    }
+
+
+    @GetMapping("/listarId/{id}")
+    public ExercicioRespostaDTO listId(@PathVariable("id") Long id) {
+        return exercicioService.findById(id);
+
+    }
+
+    @PutMapping("/atualizar/{id}")
+    public ExercicioRespostaDTO update(@PathVariable("id")long id, @RequestBody ExercicioRequisicaoDTO exercicioRequisicaoDTO) {
+        return exercicioService.update(id,exercicioRequisicaoDTO);
+
+    }
+
+
+    @DeleteMapping("/deletar/{id}")
+    public void delete(@PathVariable("id")Long id){
+        exercicioService.delete(id);
+    }
+}
