@@ -1,7 +1,7 @@
-package com.spartans.dev.gym_hub.mapper;
+package com.spartans.dev.gym_hub.mapper.aluno;
 
-import com.spartans.dev.gym_hub.dto.AlunoRequest;
-import com.spartans.dev.gym_hub.dto.AlunoResponse;
+import com.spartans.dev.gym_hub.dto.aluno.AlunoRequest;
+import com.spartans.dev.gym_hub.dto.aluno.AlunoResponse;
 import com.spartans.dev.gym_hub.model.Aluno;
 import org.springframework.stereotype.Component;
 

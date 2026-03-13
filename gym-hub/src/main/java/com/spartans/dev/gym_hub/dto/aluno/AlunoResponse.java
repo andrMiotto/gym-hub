@@ -1,4 +1,4 @@
-package com.spartans.dev.gym_hub.dto;
+package com.spartans.dev.gym_hub.dto.aluno;
 
 import java.util.Date;
 

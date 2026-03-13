@@ -1,8 +1,8 @@
 package com.spartans.dev.gym_hub.service;
 
-import com.spartans.dev.gym_hub.dto.AlunoRequest;
-import com.spartans.dev.gym_hub.dto.AlunoResponse;
-import com.spartans.dev.gym_hub.mapper.AlunoMapper;
+import com.spartans.dev.gym_hub.dto.aluno.AlunoRequest;
+import com.spartans.dev.gym_hub.dto.aluno.AlunoResponse;
+import com.spartans.dev.gym_hub.mapper.aluno.AlunoMapper;
 import com.spartans.dev.gym_hub.model.Aluno;
 import com.spartans.dev.gym_hub.repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;

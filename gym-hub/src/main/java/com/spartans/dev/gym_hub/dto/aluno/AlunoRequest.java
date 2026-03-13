@@ -1,6 +1,4 @@
-package com.spartans.dev.gym_hub.dto;
-
-import jakarta.persistence.Column;
+package com.spartans.dev.gym_hub.dto.aluno;
 
 import java.util.Date;
 
