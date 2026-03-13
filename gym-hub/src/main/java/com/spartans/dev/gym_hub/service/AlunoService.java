@@ -14,73 +14,73 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AlunoService {
 
+
     private final AlunoRepository alunoRepository;
     private final AlunoMapper alunoMapper;
 
+    public AlunoResponse criarAluno(AlunoRequest alunoRequest){
 
-    public AlunoRespostaDTO create(AlunoRequisicaoDTO alunoRequisicaoDTO) {
+        Aluno aluno = alunoMapper.paraEntidade(alunoRequest);
 
-        Aluno aluno = alunoMapper.paraEntidade(alunoRequisicaoDTO);
+        if(alunoRepository.existsById(aluno.getId())){
+            throw new RuntimeException("O aluno já existe");
+        }else {
 
-        if (aluno.getId() != null && alunoRepository.existsById(aluno.getId())) {
-            throw new RuntimeException("Aula ja existente");
+            Aluno aluno2 = alunoRepository.save(aluno);
+            AlunoResponse alunoResponse = alunoMapper.paraDTO(aluno2);
+
+            return alunoResponse;
         }
-
-        Aluno alunoSalvo = alunoRepository.save(aluno);
-
-        return alunoMapper.paraRespostaDTO(alunoSalvo);
     }
 
+    public List<AlunoResponse> listarAlunos (){
 
-    public List<AlunoRespostaDTO> listAll() {
+        if(alunoRepository.findAll().isEmpty()){
+            throw new RuntimeException("Não existe nenhum aluno cadastrado");
+        }else {
+            List<Aluno> alunos = alunoRepository.findAll();
+            List<AlunoResponse> dtos = new ArrayList<>();
 
-        List<Aluno> alunos = alunoRepository.findAll();
+            for (Aluno aluno : alunos) {
+                dtos.add(alunoMapper.paraDTO(aluno));
+            }
 
-        return alunos.stream()
-                .map(aluno -> {
-                    return alunoMapper.paraRespostaDTO(aluno);
-
-                })
-
-                .toList();
-
-    }
-
-    public AlunoRespostaDTO findById(long id) {
-        Aluno aluno = alunoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aluno não existe!"));
-
-        return alunoMapper.paraRespostaDTO(aluno);
-    }
-
-
-    public AlunoRespostaDTO update(Long id, AlunoRequisicaoDTO aluno) {
-        Aluno alunoExistente = alunoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aluno nao existe"));
-
-        alunoExistente.setNome(aluno.nome());
-        alunoExistente.setAltura(aluno.altura());
-        alunoExistente.setMassaCorporal(aluno.massaCorporal());
-        alunoExistente.setNascimento(aluno.nascimento());
-        alunoExistente.setUser(aluno.user());
-        alunoExistente.setSenha(aluno.senha());
-        alunoExistente.setDataCadastro(aluno.dataCadastro());
-        alunoExistente.setImc(aluno.imc());
-        alunoExistente.setCpf(aluno.cpf());
-
-
-        Aluno alunoAtualizado = alunoRepository.save(alunoExistente);
-        return alunoMapper.paraRespostaDTO(alunoAtualizado);
-
-    }
-
-
-    public void delete(Long id) {
-        if (!alunoRepository.existsById(id)) {
-            throw new RuntimeException("Aula nao existe");
+            return dtos;
         }
+    }
 
-        alunoRepository.deleteById(id);
+    public AlunoResponse listarPorId(long id){
+
+        Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new RuntimeException("Não existe um aluno com este id"));
+        AlunoResponse alunoResponse = alunoMapper.paraDTO(aluno);
+
+        return alunoResponse;
+    }
+
+    public AlunoResponse atualizarAluno(long id, AlunoRequest alunoRequest){
+
+        Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new RuntimeException("Não existe um aluno com este id"));
+        aluno.setNome(alunoRequest.nome());
+        aluno.setAltura(alunoRequest.altura());
+        aluno.setMassaCorporal(alunoRequest.massaCorporal());
+        aluno.setDataNascimento(alunoRequest.dataNascimento());
+        aluno.setUser(alunoRequest.user());
+        aluno.setSenha(alunoRequest.senha());
+        aluno.setImc(alunoRequest.imc());
+        aluno.setCpf(alunoRequest.cpf());
+
+        Aluno aluno1 = alunoRepository.save(aluno);
+        AlunoResponse alunoResponse = alunoMapper.paraDTO(aluno1);
+        return alunoResponse;
+    }
+
+    public void deletarAluno(long id){
+        if(alunoRepository.existsById(id)){
+            alunoRepository.deleteById(id);
+
+        }else {
+            throw new RuntimeException("Este aluno não existe");
+        }
     }
 
 

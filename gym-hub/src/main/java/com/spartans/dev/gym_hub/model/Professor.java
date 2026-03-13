@@ -6,20 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-
 @Entity
-@AllArgsConstructor
+@Table(name = "professor")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "professor")
 public class Professor {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column(nullable = false)
     private String nome;
@@ -34,13 +31,12 @@ public class Professor {
     private String sobre;
 
     @Column(nullable = false)
-    private Double avaliacao;
+    private double avaliacao;
 
     @Column(nullable = false)
     private String cpf;
 
-
-    public Professor(String nome, String cref, String especialidade, String sobre, Double avaliacao, String cpf) {
+    public Professor(String nome, String cref, String especialidade, String sobre, double avaliacao, String cpf) {
         this.nome = nome;
         this.cref = cref;
         this.especialidade = especialidade;

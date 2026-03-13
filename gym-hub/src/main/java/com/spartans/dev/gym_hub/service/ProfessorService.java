@@ -23,68 +23,63 @@ public class ProfessorService {
     private final ProfessorRepository professorRepository;
     private final ProfessorMapper professorMapper;
 
+    public ProfessorResponse criarProfessor(ProfessorRequest professorRequest){
 
-    public ProfessorRespostaDTO create(ProfessorRequisicaoDTO professorRequisicaoDTO) {
+        Professor professor = professorMapper.paraEntidade(professorRequest);
 
-        Professor professor = professorMapper.paraEntidade(professorRequisicaoDTO);
+        if(professorRepository.existsById(professor.getId())){
+            throw new RuntimeException("Professor já existe");
+        }else {
+            Professor professorSalvo = professorRepository.save(professor);
 
-        if (professor.getId() != null && professorRepository.existsById(professor.getId())) {
-            throw new RuntimeException("Professor ja existente");
+            ProfessorResponse professorResponse = professorMapper.paraDTO(professorSalvo);
+
+            return professorResponse;
         }
+    }
+
+    public List<ProfessorResponse> listarProfessores (){
+        if(professorRepository.findAll().isEmpty()){
+            throw new RuntimeException("Não existe nenhum professorgi cadastrado");
+        }
+        List<Professor> professores = professorRepository.findAll();
+        List<ProfessorResponse> dto = new ArrayList<>();
+
+        for(Professor professor : professores){
+            dto.add(professorMapper.paraDTO(professor));
+        }
+
+        return dto;
+    }
+
+    public ProfessorResponse listarProfessorPorId(long id){
+
+        Professor professor = professorRepository.findById(id).orElseThrow(() -> new RuntimeException("Este professor não existe"));
+        ProfessorResponse professorResponse = professorMapper.paraDTO(professor);
+
+        return professorResponse;
+    }
+
+    public ProfessorResponse atualizarProfessor(long id, ProfessorRequest professorRequest){
+
+        Professor professor = professorRepository.findById(id).orElseThrow(() -> new RuntimeException("Não existe professor com este id"));
+        professor.setNome(professorRequest.nome());
+        professor.setCref(professorRequest.cref());
+        professor.setEspecialidade(professorRequest.especialidade());
+        professor.setSobre(professorRequest.sobre());
+        professor.setCpf(professorRequest.cpf());
 
         Professor professorSalvo = professorRepository.save(professor);
-
-        return professorMapper.paraRespostaDTO(professorSalvo);
+        ProfessorResponse professorResponse = professorMapper.paraDTO(professorSalvo);
+        return professorResponse;
     }
 
-
-    public List<ProfessorRespostaDTO> listAll() {
-
-        List<Professor> professores = professorRepository.findAll();
-
-        return professores.stream()
-                .map(professor -> {
-                    return professorMapper.paraRespostaDTO(professor);
-
-                })
-
-                .toList();
-
-    }
-
-    public ProfessorRespostaDTO findById(long id) {
-        Professor professor = professorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Professor não existe!"));
-
-        return professorMapper.paraRespostaDTO(professor);
-    }
-
-
-    public ProfessorRespostaDTO update(Long id, ProfessorRequisicaoDTO professorRequisicaoDTO) {
-        Professor professorExistente = professorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Professor nao existe"));
-
-        professorExistente.setNome(professorRequisicaoDTO.nome());
-        professorExistente.setCref(professorRequisicaoDTO.cref());
-        professorExistente.setEspecialidade(professorRequisicaoDTO.especialidade());
-        professorExistente.setSobre(professorRequisicaoDTO.sobre());
-        professorExistente.setAvaliacao(professorRequisicaoDTO.avaliacao());
-        professorExistente.setCpf(professorRequisicaoDTO.cpf());
-
-
-        Professor professorAtualizado = professorRepository.save(professorExistente);
-        return professorMapper.paraRespostaDTO(professorAtualizado);
-
-    }
-
-
-    public void delete(Long id) {
-        if (!professorRepository.existsById(id)) {
-            throw new RuntimeException("Professor nao existe");
+    public void deletarProfessor(long id){
+        if(professorRepository.existsById(id)){
+            professorRepository.deleteById(id);
+        }else {
+            throw new RuntimeException("Erro ao deletar, não existe professor com este ID");
         }
-
-        professorRepository.deleteById(id);
-    }
-
+        }
 
 }

@@ -30,13 +30,13 @@ public class ExercicioController {
 
 
     @GetMapping("/listarId/{id}")
-    public ExercicioRespostaDTO listId(@PathVariable("id") Long id) {
+    public ExercicioResponse listId(@PathVariable("id") Long id) {
         return exercicioService.findById(id);
 
     }
 
     @PutMapping("/atualizar/{id}")
-    public ExercicioRespostaDTO update(@PathVariable("id")long id, @RequestBody ExercicioRequisicaoDTO exercicioRequisicaoDTO) {
+    public ExercicioResponse update(@PathVariable("id")long id, @RequestBody ExercicioRequest exercicioRequisicaoDTO) {
         return exercicioService.update(id,exercicioRequisicaoDTO);
 
     }

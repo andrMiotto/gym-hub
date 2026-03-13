@@ -7,16 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "aula")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-@Table(name = "aula")
+@Getter
 public class Aula {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column(nullable = false)
     private String nome;
@@ -27,13 +27,9 @@ public class Aula {
     @Column(nullable = false)
     private String duracao;
 
-
     public Aula(String nome, String descricao, String duracao) {
         this.nome = nome;
         this.descricao = descricao;
         this.duracao = duracao;
-
     }
-
-
 }

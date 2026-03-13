@@ -8,6 +8,7 @@ import com.spartans.dev.gym_hub.repository.AulaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,66 +19,60 @@ public class AulaService {
     private final AulaMapper aulaMapper;
 
 
-    public AulaRespostaDTO create(AulaRequisicaoDTO aulaRequisicaoDTO) {
+    public AulaResponse criarAula(AulaRequest aulaRequest){
+        Aula aula = aulaMapper.paraEntidade(aulaRequest);
+        if(aulaRepository.existsById(aula.getId())){
 
-        Aula aula = aulaMapper.paraEntidade(aulaRequisicaoDTO);
+            throw new RuntimeException("Já existe uma aula com este id");
+        }else {
 
-        if (aula.getId() != null && aulaRepository.existsById(aula.getId())) {
-            throw new RuntimeException("Aula ja existente");
+        Aula aulaSalva = aulaRepository.save(aula);
+        AulaResponse aulaResponse = aulaMapper.paraDTO(aulaSalva);
+
+        return aulaResponse;
+        }
+    }
+
+    public List<AulaResponse> listarAulas (){
+        if(aulaRepository.findAll().isEmpty()){
+            throw new RuntimeException("Não existe nenhum aluno cadastrado");
+
+        }else {
+            List<Aula> aulas = aulaRepository.findAll();
+            List<AulaResponse> dto = new ArrayList<>();
+
+            for (Aula aula : aulas) {
+                dto.add(aulaMapper.paraDTO(aula));
+            }
+            return dto;
+        }
+    }
+
+    public AulaResponse listarAulaPorId(long id){
+        Aula aula = aulaRepository.findById(id).orElseThrow(() -> new RuntimeException("Não existe aluno com este ID"));
+        AulaResponse aulaResponse = aulaMapper.paraDTO(aula);
+
+        return aulaResponse;
+    }
+
+    public AulaResponse atualizarAula(long id, AulaRequest aulaRequest){
+        Aula aula = aulaRepository.findById(id).orElseThrow(() -> new RuntimeException("Não existe aula com este id"));
+        aula.setNome(aulaRequest.nome());
+        aula.setDescricao(aulaRequest.descricao());
+        aula.setDuracao(aulaRequest.duracao());
+        Aula aulaSalva = aulaRepository.save(aula);
+        AulaResponse aulaResponse = aulaMapper.paraDTO(aulaSalva);
+
+        return aulaResponse;
+    }
+    public void deletarAula(long id){
+
+        if(aulaRepository.existsById(id)){
+            aulaRepository.deleteById(id);
+
+        }else {
+            throw new RuntimeException("Não existe uma aula com este ID");
         }
 
-        Aula aulaSalvo = aulaRepository.save(aula);
-
-        return aulaMapper.paraRespostaDTO(aulaSalvo);
     }
-
-
-    public List<AulaRespostaDTO> listAll() {
-
-        List<Aula> aulas = aulaRepository.findAll();
-
-        return aulas.stream()
-                .map(aula -> {
-                    return aulaMapper.paraRespostaDTO(aula);
-
-                })
-
-                .toList();
-
-    }
-
-    public AulaRespostaDTO findById(long id) {
-        Aula aula = aulaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aula não existe!"));
-
-        return aulaMapper.paraRespostaDTO(aula);
-    }
-
-
-    public AulaRespostaDTO update(Long id, AulaRequisicaoDTO aula) {
-        Aula aulaExistente = aulaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aula nao existe"));
-
-        aulaExistente.setNome(aula.nome());
-        aulaExistente.setDescricao(aula.descricao());
-        aulaExistente.setDuracao(aula.duracao());
-
-        Aula aulaAtualizada = aulaRepository.save(aulaExistente);
-        return aulaMapper.paraRespostaDTO(aulaAtualizada);
-
-    }
-
-
-    public void delete(Long id) {
-        if (!aulaRepository.existsById(id)) {
-            throw new RuntimeException("Aula nao existe");
-        }
-
-        aulaRepository.deleteById(id);
-    }
-
-
 }
-
-
-
