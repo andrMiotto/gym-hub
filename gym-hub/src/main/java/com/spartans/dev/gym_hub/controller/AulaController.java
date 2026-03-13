@@ -16,26 +16,26 @@ public class AulaController {
     private final AulaService aulaService;
 
     @PostMapping("/cadastrar")
-    public AulaRespostaDTO create(@RequestBody AulaRequisicaoDTO aula) {
+    public AulaResponse create(@RequestBody AulaRequest aula) {
         return aulaService.create(aula);
 
     }
 
     @GetMapping("/listarTodos")
-    public List<AulaRespostaDTO> listAll() {
+    public List<AulaResponse> listAll() {
         return aulaService.listAll();
 
     }
 
 
     @GetMapping("/listarId/{id}")
-    public AulaRespostaDTO listId(@PathVariable("id") Long id) {
+    public AulaResponse listId(@PathVariable("id") Long id) {
         return aulaService.findById(id);
 
     }
 
     @PutMapping("/atualizar/{id}")
-    public AulaRespostaDTO update(@PathVariable("id")long id, @RequestBody AulaRequisicaoDTO aulaRequisicaoDTO) {
+    public AulaResponse update(@PathVariable("id")long id, @RequestBody AulaRequest aulaRequisicaoDTO) {
         return aulaService.update(id,aulaRequisicaoDTO);
 
     }

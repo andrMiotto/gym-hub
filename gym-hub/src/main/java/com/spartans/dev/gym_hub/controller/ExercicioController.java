@@ -17,20 +17,20 @@ public class ExercicioController {
     private final ExercicioService exercicioService;
 
     @PostMapping("/cadastrar")
-    public ExercicioRespostaDTO create(@RequestBody ExercicioRequisicaoDTO exercicioRequisicaoDTO) {
+    public ExercicioResponse create(@RequestBody ExercicioRequest exercicioRequisicaoDTO) {
         return exercicioService.create(exercicioRequisicaoDTO);
 
     }
 
     @GetMapping("/listarTodos")
-    public List<ExercicioRespostaDTO> listAll() {
+    public List<ExercicioResponse> listAll() {
         return exercicioService.listAll();
 
     }
 
 
     @GetMapping("/listarId/{id}")
-    public ExercicioResponse listId(@PathVariable("id") Long id) {
+    public ExercicioResponse listById(@PathVariable("id") Long id) {
         return exercicioService.findById(id);
 
     }

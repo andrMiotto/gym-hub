@@ -19,7 +19,7 @@ public class EquipamentoController {
     @PostMapping("/cadastrar")
     public EquipamentoResponse criarEquipamento(EquipamentoRequest equipamentoRequest){
         try{
-            return equipamentoService.criarEquipamento(equipamentoRequest);
+            return equipamentoService.create(equipamentoRequest);
         }catch (RuntimeException e){
             throw new RuntimeException(e.getMessage());
         }
@@ -28,7 +28,7 @@ public class EquipamentoController {
     @GetMapping("/listar")
     public List<EquipamentoResponse> listarEquipamentos (){
         try{
-            return equipamentoService.listarEquipamentos();
+            return equipamentoService.listAll();
         }catch (RuntimeException e){
             throw new RuntimeException(e.getMessage());
         }
@@ -37,7 +37,7 @@ public class EquipamentoController {
     @GetMapping("/listar/{id}")
     public EquipamentoResponse listarEquipamentoPorId(@PathVariable long id){
         try{
-            return equipamentoService.listarPorId(id);
+            return equipamentoService.findById(id);
         }catch (RuntimeException e){
             throw new RuntimeException(e.getMessage());
         }
@@ -46,7 +46,7 @@ public class EquipamentoController {
     @PutMapping("atualizar/{id}")
     public EquipamentoResponse atualizarEquipamento(@PathVariable long id, EquipamentoRequest equipamentoRequest){
         try{
-            return equipamentoService.atualizar(id, equipamentoRequest);
+            return equipamentoService.update(id, equipamentoRequest);
         }catch (RuntimeException e){
             throw new RuntimeException(e.getMessage());
         }
@@ -55,7 +55,7 @@ public class EquipamentoController {
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity deletarEquipamento (@PathVariable long id){
         try{
-            equipamentoService.deletarEquipamento(id);
+            equipamentoService.delete(id);
             return ResponseEntity.status(201).body("O equipamento foi deletado");
         }catch (RuntimeException e){
             throw new RuntimeException(e.getMessage());

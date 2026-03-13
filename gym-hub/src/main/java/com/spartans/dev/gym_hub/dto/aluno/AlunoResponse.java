@@ -7,7 +7,7 @@ public record AlunoResponse(
         String nome,
         double altura,
         double massaCorporal,
-        Date dataNascimento,
+        Date nascimento,
         String user,
         String senha,
         Date dataCadastro,

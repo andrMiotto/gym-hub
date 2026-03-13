@@ -8,6 +8,7 @@ import com.spartans.dev.gym_hub.repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,7 +64,7 @@ public class AlunoService {
         aluno.setNome(alunoRequest.nome());
         aluno.setAltura(alunoRequest.altura());
         aluno.setMassaCorporal(alunoRequest.massaCorporal());
-        aluno.setDataNascimento(alunoRequest.dataNascimento());
+        aluno.setNascimento(alunoRequest.nascimento());
         aluno.setUser(alunoRequest.user());
         aluno.setSenha(alunoRequest.senha());
         aluno.setImc(alunoRequest.imc());
