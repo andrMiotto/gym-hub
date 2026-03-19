@@ -9,4 +9,19 @@ import java.util.List;
 
 @Repository
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+
+
+    List<Aluno> findByNome(String nome);
+
+    List<Aluno> findByAltura(Double altura);
+
+    List<Aluno> findByMassaCorporal(Double massaCorporal);
+
+    List<Aluno> findByNascimento(Date nascimento);
+
+    List<Aluno> findByUser(String user);
+
+    List<Aluno> findByCpf(String cpf);
+
+    List<Aluno> findByImc(String imc);
 }
