@@ -22,7 +22,6 @@ public class ProfessorService {
 
         Professor professor = professorMapper.paraEntidade(professorRequest);
 
-
             Professor professorSalvo = professorRepository.save(professor);
             ProfessorResponse professorResponse = professorMapper.paraDTO(professorSalvo);
 
