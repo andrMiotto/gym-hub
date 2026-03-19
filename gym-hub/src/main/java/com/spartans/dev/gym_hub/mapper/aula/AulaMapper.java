@@ -9,20 +9,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class AulaMapper {
 
-    public Aula paraEntidade(AulaRequest aulaRequest){
+    public Aula paraEntidade(AulaRequest aulaRequest) {
 
         return new Aula(aulaRequest.nome(),
                 aulaRequest.descricao(),
-                aulaRequest.duracao());
+                aulaRequest.duracao(),
+                aulaRequest.professor()
+        );
     }
 
-    public AulaResponse paraDTO(Aula aula){
+    public AulaResponse paraDTO(Aula aula) {
 
         return new AulaResponse(
                 aula.getId(),
                 aula.getNome(),
                 aula.getDescricao(),
-                aula.getDuracao()
+                aula.getDuracao(),
+                aula.getProfessor()
         );
     }
 
