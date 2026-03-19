@@ -18,31 +18,31 @@ public class ProfessorService {
     private final ProfessorRepository professorRepository;
     private final ProfessorMapper professorMapper;
 
-    public ProfessorResponse create(ProfessorRequest professorRequest){
+    public ProfessorResponse create(ProfessorRequest professorRequest) {
 
         Professor professor = professorMapper.paraEntidade(professorRequest);
 
-            Professor professorSalvo = professorRepository.save(professor);
-            ProfessorResponse professorResponse = professorMapper.paraDTO(professorSalvo);
+        Professor professorSalvo = professorRepository.save(professor);
+        ProfessorResponse professorResponse = professorMapper.paraDTO(professorSalvo);
 
-            return professorResponse;
+        return professorResponse;
     }
 
-    public List<ProfessorResponse> listAll (){
-        if(professorRepository.findAll().isEmpty()){
+    public List<ProfessorResponse> listAll() {
+        if (professorRepository.findAll().isEmpty()) {
             throw new RuntimeException("Não existe nenhum professorgi cadastrado");
         }
         List<Professor> professores = professorRepository.findAll();
         List<ProfessorResponse> dto = new ArrayList<>();
 
-        for(Professor professor : professores){
+        for (Professor professor : professores) {
             dto.add(professorMapper.paraDTO(professor));
         }
 
         return dto;
     }
 
-    public ProfessorResponse findById(long id){
+    public ProfessorResponse findById(long id) {
 
         Professor professor = professorRepository.findById(id).orElseThrow(() -> new RuntimeException("Este professor não existe"));
         ProfessorResponse professorResponse = professorMapper.paraDTO(professor);
@@ -50,7 +50,7 @@ public class ProfessorService {
         return professorResponse;
     }
 
-    public ProfessorResponse update(long id, ProfessorRequest professorRequest){
+    public ProfessorResponse update(long id, ProfessorRequest professorRequest) {
 
         Professor professor = professorRepository.findById(id).orElseThrow(() -> new RuntimeException("Não existe professor com este id"));
         professor.setNome(professorRequest.nome());
@@ -64,12 +64,12 @@ public class ProfessorService {
         return professorResponse;
     }
 
-    public void delete(long id){
-        if(professorRepository.existsById(id)){
+    public void delete(long id) {
+        if (professorRepository.existsById(id)) {
             professorRepository.deleteById(id);
-        }else {
+        } else {
             throw new RuntimeException("Erro ao deletar, não existe professor com este ID");
         }
-        }
+    }
 
 }
